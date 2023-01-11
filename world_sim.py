@@ -1,49 +1,55 @@
 import time
 
 class Sun:
-    def __init__(self, shining = True):
-        self.shining = shining
+    def __init__(self):
+        self.shining = False
+    
+    def day(self):
+        self.shining = not self.shining
 
 class Tree:
-    def photosynthesis(self):
-        if sun.shining == True:
-            print('The tree is producing oxygen...')
+    def __init__(self):
+        pass
+
+    def photosynthesis(self, oSun):
+        if oSun.shining == True:
+            print('The Sun is shining...\nThe tree is producing oxygen...')
             return True
         else:
-            print('No sun, so no air to breathe...')
+            print('No Sun, so no air to breathe...')
             return False
 
 class Grass:
-    def __init__(self, bunch = 1):
-        self.bunch = bunch
+    def __init__(self):
+        self.bunch = 1
     
     def aBunch(self):
         return self.bunch
 
 class Frog:
-    def __init__(self, energy = 3):
-        self.energy = energy
+    def __init__(self):
+        self.energy = 3
 
-    def awake(self):
-        if tree.photosynthesis() == False:
+    def awake(self, oSun, oTree, oGrass):
+        if oTree.photosynthesis(oSun) == False:
             print('The frog is sleeping...')
             time.sleep(1)
         else:
-            print('The frog is jumping...')
+            print('The frog is awake and jumping...')
             time.sleep(1)
             while True:
                 self.energy -= 1
                 if self.energy < 0:
                     print('The frog is hungry...')
                     time.sleep(1)
-                    self.eating()
+                    self.eating(oGrass)
                     break
     
-    def eating(self):
+    def eating(self, oGrass):
         print('The frog is eating...')
         time.sleep(1)
         while True:
-            self.energy += grass.aBunch()
+            self.energy += oGrass.aBunch()
             if self.energy > 3:
                 print('The frog is full now...')
                 time.sleep(1)
@@ -51,25 +57,34 @@ class Frog:
                     
     
 class World:
-    def startSim(self):
+    def __init__(self):
+        self.name = ''
+    def setName(self, name):
+        self.name = name
+    def getName(self):
+        print(self.name)
+
+    def startSim(self, oSun, oTree, oGrass, oFrog):
         day = 1
+        print(f'Welcome to {self.name}!')
         while True:
             print('Day',  day,  ': ')
-            q = input('Is today the day? (y/n) ')
-            if q == 'y':
+            question = input('Is today the day? (y/n) ')
+            question = question.lower()[0]
+            if question == 'y':
                 print('This morning the frog commited suicide...\nThere is nothing to watch here anymore...\nBye')
                 break
-            if q == 'n':
-                tree.photosynthesis()
-                frog.awake()
+            if question == 'n':
+                oSun.day()
+                oTree.photosynthesis(oSun)
+                oFrog.awake(oSun, oTree, oGrass)
                 time.sleep(1)
-                sun.shining = False
+                oSun.day()
                 print("It's nighttime...")
                 time.sleep(1)
-                tree.photosynthesis()
-                frog.awake()
+                oTree.photosynthesis(oSun)
+                oFrog.awake(oSun, oTree, oGrass)
                 time.sleep(1)
-                sun.shining = True
                 day += 1
 
 
@@ -80,5 +95,5 @@ tree = Tree()
 grass = Grass()
 frog = Frog()
 world = World()
-
-world.startSim()
+world.setName('Serenum')
+world.startSim(sun, tree, grass, frog)
