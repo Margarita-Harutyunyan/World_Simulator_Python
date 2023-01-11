@@ -13,10 +13,9 @@ class Tree:
 
     def photosynthesis(self, oSun):
         if oSun.shining == True:
-            print('The Sun is shining...\nThe tree is producing oxygen...')
+            return True
         else:
-            print('No Sun, so no air to breathe...')
-            return 
+            return False
 
 class Grass:
     def __init__(self):
@@ -30,10 +29,12 @@ class Frog:
         self.energy = 3
 
     def awake(self, oSun, oTree, oGrass):
-        if oTree.photosynthesis(oSun) == None:
+        if oTree.photosynthesis(oSun) == False:
+            print('No Sun, so no air to breathe...')
             print('The frog is sleeping...')
             time.sleep(1)
         else:
+            print('The Sun is shining...\nThe tree is producing oxygen...')
             print('The frog is awake and jumping...')
             time.sleep(1)
             while True:
